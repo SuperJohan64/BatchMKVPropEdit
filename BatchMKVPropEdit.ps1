@@ -1,7 +1,6 @@
 $xml = "$PSScriptRoot\MKVPropEditGUI.xml"
 if (!(Test-Path $xml)) {
     $mkvpropedit = Read-Host "`nEnter the local path to mkvpropedit.exe"
-    $mkvpropedit = $mkvpropedit.Replace("`"","")
     $mkvpropedit | Export-Clixml $xml
 }
 
