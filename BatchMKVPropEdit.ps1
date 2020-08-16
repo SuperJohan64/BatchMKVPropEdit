@@ -8,7 +8,7 @@ $track = Read-Host "`n********************************`n`nSelect track.`n`nFor s
 $enableOrDisable = Read-Host "`n********************************`n`nSelect an option.`n`n0. Disable Track`n1. Enable Track`n`nEnter 0 or 1"
 $force = Read-Host "`n********************************`n`nForce this track?`n`n0. No`n1. Yes`n`nEnter 0 or 1"
 
-foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Recurse).FullName) {
+foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
     Write-Host `n$file
     & $mkvpropedit $file `
         --edit track:$track --set flag-default=$enableOrDisable `
