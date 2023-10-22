@@ -45,15 +45,19 @@ function Remove-MkvTitleMetaData {
     }
 }
 
-$sourceDir = Read-Host "`nEnter the path to the source file or directory"
-$sourceDir = $sourceDir.Replace("`"","")
+while ($true) {
 
-Write-Host "`nChoose a mode."
-Write-Host "`n1. Set MKV trak's default, forced, and enabled flags. This options also removes the MKV title meta data`n2. Set MKV tracks language`n3. Remove MKV title metadata`n"
-$scriptMode = Read-Host "Enter 1, 2, or 3"
+    $sourceDir = Read-Host "`nEnter the path to the source file or directory"
+    $sourceDir = $sourceDir.Replace("`"","")
 
-switch ($scriptMode) {
-    1 {Set-MkvTrackFlags}
-    2 {Set-MkvTrackLanguage}
-    3 {Remove-MkvTitleMetaData}
+    Write-Host "`nChoose a mode."
+    Write-Host "`n1. Set MKV trak's default, forced, and enabled flags. This options also removes the MKV title meta data`n2. Set MKV tracks language`n3. Remove MKV title metadata`n"
+    $scriptMode = Read-Host "Enter 1, 2, or 3"
+
+    switch ($scriptMode) {
+        1 {Set-MkvTrackFlags}
+        2 {Set-MkvTrackLanguage}
+        3 {Remove-MkvTitleMetaData}
+    }
+    
 }
