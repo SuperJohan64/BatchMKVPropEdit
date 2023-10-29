@@ -51,13 +51,14 @@ while ($true) {
     $sourceDir = $sourceDir.Replace("`"","")
 
     Write-Host "`nChoose a mode."
-    Write-Host "`n1. Set MKV trak's default, forced, and enabled flags. This options also removes the MKV title meta data`n2. Set MKV tracks language`n3. Remove MKV title metadata`n"
-    $scriptMode = Read-Host "Enter 1, 2, or 3"
+    Write-Host "`n1. Set MKV trak's default, forced, and enabled flags. This options also removes the MKV title meta data`n2. Set MKV tracks language`n3. Remove MKV title metadata`n4. Exit Script"
+    $scriptMode = Read-Host "`nEnter 1, 2, 3, or 4"
 
     switch ($scriptMode) {
         1 {Set-MkvTrackFlags}
         2 {Set-MkvTrackLanguage}
         3 {Remove-MkvTitleMetaData}
+        4 {Exit}
     }
     
 }
