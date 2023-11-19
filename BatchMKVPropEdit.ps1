@@ -1,3 +1,7 @@
+# MKVToolNix/mkvpropedit.exe download - https://mkvtoolnix.download/downloads.html
+# mkvpropedit.exe documentation -  https://mkvtoolnix.download/doc/mkvpropedit.html
+# ISO 639-2 codes for track languages - https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
+
 if (Test-Path "$PSScriptRoot\mkvpropedit.exe") {
     $mkvpropedit = "$PSScriptRoot\mkvpropedit.exe"
 }
@@ -6,7 +10,7 @@ else {
         $mkvpropedit = "$env:ProgramFiles\MKVToolNix\mkvpropedit.exe"
     }
     else {
-        Write-Host "No mkvpropedit found. Please make sure mkvpropedit.exe is installed or saved to the same directory as this script."
+        Write-Host "mkvpropedit.exe not found.`nMake sure mkvpropedit.exe is installed to the default windows directory or the same directory as this script."
         Exit
     }
 }
@@ -14,18 +18,18 @@ Write-Host "mkvpropedit.exe found in $mkvpropedit"
 
 function Set-MkvTrackFlags {
     $track = Read-Host "`n********************************`n`nSelect track.`n`nFor subtitle tracks use s1, s2, s3 etc.`nFor audio tracks use a1, a2, a3, etc`n`nEnter your track"
-        $enableOrDisable = Read-Host "`n********************************`n`nSelect an option.`n`n0. Disable Track`n1. Enable Track`n`nEnter 0 or 1"
-        $setDefaultTrack = Read-Host "`n********************************`n`nSelect an option.`n`n0. Remove default flag on track`n1. Enable default flag on track`n`nEnter 0 or 1"
-        $forceTrack = Read-Host "`n********************************`n`nForce this track?`n`n0. No`n1. Yes`n`nEnter 0 or 1"
+    $enableOrDisable = Read-Host "`n********************************`n`nSelect an option.`n`n0. Disable Track`n1. Enable Track`n`nEnter 0 or 1"
+    $setDefaultTrack = Read-Host "`n********************************`n`nSelect an option.`n`n0. Remove default flag on track`n1. Enable default flag on track`n`nEnter 0 or 1"
+    $forceTrack = Read-Host "`n********************************`n`nForce this track?`n`n0. No`n1. Yes`n`nEnter 0 or 1"
 
-        foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
-            Write-Host `n$file
-            & $mkvpropedit $file `
-                -d title `
-                --edit track:$track --set flag-enabled=$enableOrDisable `
-                --edit track:$track --set flag-default=$setDefaultTrack `
-                --edit track:$track --set flag-forced=$forceTrack
-        }
+    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+        Write-Host `n$file
+        & $mkvpropedit $file `
+            -d title `
+            --edit track:$track --set flag-enabled=$enableOrDisable `
+            --edit track:$track --set flag-default=$setDefaultTrack `
+            --edit track:$track --set flag-forced=$forceTrack
+    }
 }
 
 function Set-MkvTrackLanguage {
@@ -38,6 +42,16 @@ function Set-MkvTrackLanguage {
     }
 }
 
+function Set-MkvTrackName {
+    $track = Read-Host "`n********************************`n`nSelect track.`n`nFor subtitle tracks use s1, s2, s3 etc.`nFor audio tracks use a1, a2, a3, etc`n`nEnter your track"
+    $name = Read-Host "`n********************************`n`nEnter MKV track's name"
+
+    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+        Write-Host `n$file
+        & $mkvpropedit $file --edit track:$track --set name=$name
+    }
+}
+
 function Remove-MkvTitleMetaData {
     foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
         Write-Host `n$file
@@ -46,19 +60,18 @@ function Remove-MkvTitleMetaData {
 }
 
 while ($true) {
-
     $sourceDir = Read-Host "`nEnter the path to the source file or directory"
-    $sourceDir = $sourceDir.Replace("`"","")
+    $sourceDir = $sourceDir.Replace("`"", "")
 
     Write-Host "`nChoose a mode."
-    Write-Host "`n1. Set MKV trak's default, forced, and enabled flags. This options also removes the MKV title meta data`n2. Set MKV tracks language`n3. Remove MKV title metadata`n4. Exit Script"
-    $scriptMode = Read-Host "`nEnter 1, 2, 3, or 4"
+    Write-Host "`n1. Set MKV track's default, forced, enabled flags, and remove MKV title data.`n2. Set MKV tracks language.`n3. Set MKV track's name.`n4. Remove MKV title metadata`n5. Exit Script"
+    $scriptMode = Read-Host "`nEnter an option 1-5"
 
     switch ($scriptMode) {
-        1 {Set-MkvTrackFlags}
-        2 {Set-MkvTrackLanguage}
-        3 {Remove-MkvTitleMetaData}
-        4 {Exit}
+        1 { Set-MkvTrackFlags }
+        2 { Set-MkvTrackLanguage }
+        3 { Set-MkvTrackName }
+        4 { Remove-MkvTitleMetaData }
+        5 { Exit }
     }
-    
 }
