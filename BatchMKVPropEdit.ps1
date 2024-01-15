@@ -34,7 +34,7 @@ function Set-MkvTrackFlags {
 
 function Set-MkvTrackLanguage {
     $track = Read-Host "`n********************************`n`nSelect track.`n`nFor subtitle tracks use s1, s2, s3 etc.`nFor audio tracks use a1, a2, a3, etc`n`nEnter your track"
-    $language = Read-Host "`n********************************`n`nEnter the track 3 digit language code (eg eng or jpn)"
+    $language = Read-Host "`n********************************`n`nEnter the track 3 digit language code (eg eng, jpn, or und (undetermined) )"
 
     foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
         Write-Host `n$file
