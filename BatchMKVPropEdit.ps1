@@ -22,7 +22,7 @@ function Set-MkvTrackFlags {
     $setDefaultTrack = Read-Host "`n********************************`n`nSelect an option.`n`n0. Remove default flag on track`n1. Enable default flag on track`n`nEnter 0 or 1"
     $forceTrack = Read-Host "`n********************************`n`nForce this track?`n`n0. No`n1. Yes`n`nEnter 0 or 1"
 
-    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+    foreach ($file in $sourceFiles) {
         Write-Host `n$file
         & $mkvpropedit $file `
             -d title `
@@ -36,7 +36,7 @@ function Set-MkvTrackLanguage {
     $track = Read-Host "`n********************************`n`nSelect track.`n`nFor subtitle tracks use s1, s2, s3 etc.`nFor audio tracks use a1, a2, a3, etc`n`nEnter your track"
     $language = Read-Host "`n********************************`n`nEnter the track 3 digit language code (eg eng, jpn, or und (undetermined) )"
 
-    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+    foreach ($file in $sourceFiles) {
         Write-Host `n$file
         & $mkvpropedit $file --edit track:$track --set language=$language
     }
@@ -46,22 +46,23 @@ function Set-MkvTrackName {
     $track = Read-Host "`n********************************`n`nSelect track.`n`nFor subtitle tracks use s1, s2, s3 etc.`nFor audio tracks use a1, a2, a3, etc`n`nEnter your track"
     $name = Read-Host "`n********************************`n`nEnter MKV track's name"
 
-    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+    foreach ($file in $sourceFiles) {
         Write-Host `n$file
         & $mkvpropedit $file --edit track:$track --set name=$name
     }
 }
 
 function Remove-MkvTitleMetaData {
-    foreach ($file in (Get-ChildItem -LiteralPath $sourceDir -Include *.mkv -Recurse).FullName) {
+    foreach ($file in $sourceFiles) {
         Write-Host `n$file
         & $mkvpropedit $file -d title `
     }
 }
 
 while ($true) {
-    $sourceDir = Read-Host "`nEnter the path to the source file or directory"
-    $sourceDir = $sourceDir.Replace("`"", "")
+    $sourceFiles = Read-Host "`nEnter the path to the source file or directory"
+    $sourceFiles = $sourceFiles.Replace("`"", "")
+    $sourceFiles = (Get-ChildItem -LiteralPath $sourceFiles -Include *.mkv -Recurse).FullName
 
     Write-Host "`nChoose a mode."
     Write-Host "`n1. Set MKV track's default, forced, enabled flags, and remove MKV title data.`n2. Set MKV tracks language.`n3. Set MKV track's name.`n4. Remove MKV title metadata`n5. Exit Script"
