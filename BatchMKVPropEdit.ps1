@@ -65,8 +65,7 @@ while ($true) {
     $sourceFiles = $sourceFiles.Replace("`"", "")
     $sourceFiles = (Get-ChildItem -LiteralPath $sourceFiles -Include *.mkv -Recurse).FullName
 
-    Write-Host "`nChoose a mode."
-    Write-Host "`n1. Set MKV track's default, forced, enabled flags, and remove MKV title data.`n2. Set MKV tracks language.`n3. Set MKV track's name.`n4. Remove MKV title metadata`n5. Exit Script"
+    Write-Host "`nChoose a mode.`n`n1. Set MKV track's default, forced, enabled flags, and remove MKV title data.`n2. Set MKV tracks language.`n3. Set MKV track's name.`n4. Remove MKV title metadata`n5. Exit Script"
     $scriptMode = Read-Host "`nEnter an option 1-5"
 
     switch ($scriptMode) {
