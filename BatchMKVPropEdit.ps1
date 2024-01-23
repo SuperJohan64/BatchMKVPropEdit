@@ -10,7 +10,8 @@ else {
         $mkvpropedit = "$env:ProgramFiles\MKVToolNix\mkvpropedit.exe"
     }
     else {
-        Write-Host "mkvpropedit.exe not found.`nMake sure mkvpropedit.exe is installed to the default windows directory or the same directory as this script."
+        Write-Host "mkvpropedit.exe not found.`n`nDownload and install MKVToolNix from the following URL - https://mkvtoolnix.download/downloads.html.`n`nThis script will now close.`n"
+        PAUSE
         Exit
     }
 }
