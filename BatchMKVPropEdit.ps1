@@ -61,9 +61,17 @@ function Remove-MkvTitleMetaData {
 }
 
 while ($true) {
-    $sourceFiles = Read-Host "`nEnter the path to the source file or directory"
-    $sourceFiles = $sourceFiles.Replace("`"", "")
-    $sourceFiles = (Get-ChildItem -LiteralPath $sourceFiles -Include *.mkv -Recurse).FullName
+    if ($sourceFiles -ne $null) {
+        Write-Host "`nWould you like to use the following source?`n$sourceFiles`n`n1 - Yes`n2 - No`n3 - Exit Script`n"
+        $chooseSource = Read-Host "Enter an option 1-3"
+        if ($chooseSource -eq 3) {Exit}
+    }
+
+    if (($sourceFiles -eq $null) -or ($chooseSource -ne "1")) {
+        $sourceFiles = Read-Host "`nEnter the path to the source file or directory"
+        $sourceFiles = $sourceFiles.Replace("`"", "")
+        $sourceFiles = (Get-ChildItem -LiteralPath $sourceFiles -Include *.mkv -Recurse).FullName
+    }
 
     Write-Host "`nChoose a mode.`n`n1. Set MKV track's default, forced, enabled flags, and remove MKV title data.`n2. Set MKV tracks language.`n3. Set MKV track's name.`n4. Remove MKV title metadata`n5. Exit Script"
     $scriptMode = Read-Host "`nEnter an option 1-5"
@@ -74,5 +82,6 @@ while ($true) {
         3 { Set-MkvTrackName }
         4 { Remove-MkvTitleMetaData }
         5 { Exit }
+        default {Write-Host "`nError - invalid mode."}
     }
 }
